@@ -49,13 +49,16 @@ CCFLAGS = $(CCOPT) -I$(CPLEXINCDIR) -I$(CONCERTINCDIR)
 
 all:	optiStoch
 
-optiStoch: main.o instance.o
-	$(CCC) $(CCFLAGS) -g main.o instance.o -g -o optiStoch $(CCLNFLAGS)
+optiStoch: main.o instance.o Statique.o
+	$(CCC) $(CCFLAGS) -g main.o instance.o Statique.o -g -o optiStoch $(CCLNFLAGS)
 
 main.o: main.cpp instance.hpp
 	$(CCC) -g -c $(CCFLAGS) main.cpp -o main.o
 instance.o: instance.cpp instance.hpp
 	g++ -g -c $(CCFLAGS) instance.cpp
+Statique.o: Statique.hpp Statique.cpp
+	g++ -g -c $(CCFLAGS) Statique.cpp
+
 
 clean:
 	rm -f *.o
