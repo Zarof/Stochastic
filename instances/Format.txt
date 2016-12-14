@@ -1,0 +1,22 @@
+Format des fichiers de données
+******************************
+
+Nom du fichier
+--------------
+Exemple : "UncertainLS_T20_I6_Td11_U5_S100_no3.txt"
+- T=20 périodes
+- I=6 usines
+- Demande déterministe Td=11 périodes à l'avance
+- Demande stochastique variant dans un intervalle de 2*5% de son centre d'amplitude (dans [95% d(t); 105% d(t)]) [d(t) est saisonnier]
+- S=100 scénarios
+- 3 ème instance générée avec ces paramètres
+
+Format du ficher
+----------------
+Format texte comprenant uniquement des entiers séparés par des espaces ou des retours à la ligne (attention aux retours à la ligne Windows/Unix lors de la lecture)
+Ligne 1 : T I Cout_de_stockage_unitaire
+Ligne 2 : Td S
+Ligne 2+i : Capacité_usine_i Cout_unitaire_i_1 Cout_unitaire_i_2 ... Cout_unitaire_i_T
+...
+Ligne 2+I+1 : d(1) ... d(Td)
+Ligne 2+I+s : d(Td+1,s) ... d(T,s)
