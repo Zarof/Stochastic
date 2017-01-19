@@ -1,0 +1,14 @@
+#include <ilcplex/ilocplex.h>
+#include "instance.hpp"
+#pragma once
+
+class Light{
+public:
+  int val, val2;
+  vector<vector<int> > production2;
+  vector<int> stock2;
+  vector<vector<int> > production;
+  vector<int> stock;
+  
+  void solve(Instance Inst);
+};

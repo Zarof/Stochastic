@@ -16,8 +16,13 @@ public:
   vector<vector<int> > p; //p[i][t] = cout unitaire de produire sur usine i au temps t
 
   vector<int> demandes_det; //pour les premiers Td unités de temps, les demandes (deterministes) associées
-  vector<vector<int> > demandes; //demandes[s][t] = demande à la période t dans le scénario s 
+  vector<vector<int> > demandes; //demandes[s][t] = demande à la période t dans le scénario s
+
+  //indicateurs sur les solutions obtenus
+  //  int val_statique;
+  //  int val_light_robustness;
+  //  int val_recours_aff;
   
-  Instance();
+  //Instance();
   Instance(char* file);
 };

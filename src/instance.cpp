@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Instance::Instance(){
+/*Instance::Instance(){
   NT = 0;
   I = 0 ;
   h = 0;
@@ -19,7 +19,7 @@ Instance::Instance(){
   vector<vector<int> > v1, v2;
   p = v1;
   demandes = v2;
-}
+}*/
 
 Instance::Instance(char* file){
   cout << "Lecture donnee: " << file << endl;
@@ -62,4 +62,5 @@ Instance::Instance(char* file){
   for(int sc=0; sc<s ; sc++)
     for(int t=0 ; t<NT-Td; t++)
       infile>>demandes[sc][t];
+    
 }

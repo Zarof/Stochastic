@@ -1,0 +1,108 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+
+#include "instance.hpp"
+#include "Statique.hpp"
+#include "Light.hpp"
+
+using namespace std;
+
+
+/*
+//V0 : on prend demandes certaines en paramètres pour calculer si excédent
+vector<int> calcul_cout_sol(vector<vector<int> > prod, vector<int> demandes, vector<vector<int> > demandes_incertaines){
+  //renvoie vecteur avec valeur1 = demandes satisfaites, valeur2 = demandes INsatisfaites par solution
+  cout<<"calcul du cout de la solution"<<endl;
+  vector<int> res;
+
+  //garder demandes?? toujours satisfaites à priori...
+  //est-ce qu'on s'intéresse vrmnt à demandes satisfaites en trop ? déjà pénalisé par cout de stockage
+
+  return res;  
+}
+*/
+
+//V1: on prend juste demandes incertaines car on veut juste savoir quand ça manque
+vector<int> calcul_cout_sol(vector<vector<int> > prod, Instance &Inst){
+  //valeur1 = demandes satisfaites,
+  //valeur2 = demandes INsatisfaites par solution
+  //valeur3 = valeur moyenne de la solution
+  cout<<"calcul du cout de la solution"<<endl;
+  int surplus_moyen = 0 ;
+  int manque_moyen = 0 ;
+
+  for(int t = 0 ; t<Inst.NT-Inst.Td; t++){ //pour toutes les périodes
+    
+    int produit = 0; //ce qui a été produit
+    for(int usine = 0 ; usine<Inst.I ; usine++){
+      produit += prod[usine][Inst.Td+t];
+    }
+
+    for(int s = 0 ; s<Inst.s; s++){ //on calcule manque/surplus moyen sur tous les scénarios et ajoute ce cout moyen à la solution
+      cout<<"Demande en "<<t<<" dans scénario "<<s<<" : "<<Inst.demandes[s][t]<<endl;
+      cout<<"Production "<<t<<" : "<<produit<<endl;
+      if (Inst.demandes[s][t] - produit > 0 ){
+	manque_moyen += (Inst.demandes[s][t] - produit)/Inst.s; //divisé par nb scénarios car manque moyen par unité de temps
+      }
+      else{
+	cout<<"Il y a trop"<<endl;
+	surplus_moyen += (produit - Inst.demandes[s][t])/Inst.s;
+      } 
+    }
+  }
+
+  int cout_sol = surplus_moyen*Inst.h + manque_moyen ; //multiplié par qqch pour vrmnt pénaliser!
+
+  vector<int> res;
+  res.push_back(surplus_moyen);
+  res.push_back(manque_moyen);  
+  res.push_back(cout_sol);
+  return res;
+}
+
+int main(int argc, char** argv){
+
+  if(argc > 1) {
+
+    Instance Inst(argv[1]);
+    
+    Statique s;
+    //    Light l;
+    s.solve(Inst);
+    cout <<"Objectif statique " << s.val<<endl;
+    for(int t=0; t<Inst.NT; t++){
+      cout << s.stock[t] << "\t" ;
+      for(int i=0; i<Inst.I; i++)
+	cout << s.production[i][t] << "\t" ;
+      cout << endl;
+    }
+
+
+    /* l.solve(Inst);
+    cout <<"Objectif light robuste alea " << l.val2<<endl;
+    for(int t=0; t<Inst.NT; t++){
+      cout << l.stock2[t] << "\t" ;
+      for(int i=0; i<Inst.I; i++)
+	cout << l.production2[i][t] << "\t" ;
+      cout << endl;
+    }
+    cout <<"Objectif light robuste " << l.val<<endl;
+    for(int t=0; t<Inst.NT; t++){
+      cout << l.stock[t] << "\t" ;
+      for(int i=0; i<Inst.I; i++)
+	cout << l.production[i][t] << "\t" ;
+      cout << endl;
+      }*/
+
+    /*calcul du coût des solutions*/
+    //vector<int> cout_robuste = calcul_cout_sol(l.production, Inst.demandes_det, Inst.demandes);
+    int cout_robuste = calcul_cout_sol(s.production, Inst);
+    
+    
+    cout<<"Fin Programme"<<endl;
+  }
+  else
+    cout<<"Aucun fichier de données en paramètre"<<endl;
+  return 0;
+}

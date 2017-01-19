@@ -45,12 +45,12 @@ CCLNFLAGS = -L$(CPLEXLIBDIR) -lilocplex -lcplex -L$(CONCERTLIBDIR) -lconcert -lm
 CONCERTINCDIR = $(CONCERTDIR)include
 CPLEXINCDIR   = $(CPLEXDIR)include
 
-CCFLAGS = $(CCOPT) -I$(CPLEXINCDIR) -I$(CONCERTINCDIR)
+CCFLAGS = $(CCOPT) -I$(CPLEXINCDIR) -I$(CONCERTINCDIR) -w
 
 all:	optiStoch
 
-optiStoch: main.o instance.o Statique.o
-	$(CCC) $(CCFLAGS) -g main.o instance.o Statique.o -g -o optiStoch $(CCLNFLAGS)
+optiStoch: main.o instance.o Statique.o Light.o
+	$(CCC) $(CCFLAGS) -g main.o instance.o Light.o Statique.o -g -o optiStoch $(CCLNFLAGS)
 
 main.o: main.cpp instance.hpp
 	$(CCC) -g -c $(CCFLAGS) main.cpp -o main.o
@@ -58,7 +58,8 @@ instance.o: instance.cpp instance.hpp
 	g++ -g -c $(CCFLAGS) instance.cpp
 Statique.o: Statique.hpp Statique.cpp
 	g++ -g -c $(CCFLAGS) Statique.cpp
-
+Light.o: Light.hpp Light.cpp
+	g++ -g -c $(CCFLAGS) Light.cpp
 
 clean:
 	rm -f *.o

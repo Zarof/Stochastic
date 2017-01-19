@@ -4,5 +4,9 @@
 
 class Statique{
 public:
+  int val;
+  vector<vector<int> > production;
+  vector<int> stock;
+  
   void solve(Instance Inst);
 };
